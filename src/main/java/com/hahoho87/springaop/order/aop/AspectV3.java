@@ -11,11 +11,11 @@ import org.aspectj.lang.annotation.Pointcut;
 public class AspectV3 {
 
     @Pointcut("execution(* com.hahoho87.springaop.order..*(..))")
-    public void allOrder() {
+    private void allOrder() {
     }
 
     @Pointcut("execution(* *..*Service.*(..))")
-    public void allService() {
+    private void allService() {
     }
 
 

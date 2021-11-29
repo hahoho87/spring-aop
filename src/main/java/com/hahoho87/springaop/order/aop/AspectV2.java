@@ -11,7 +11,7 @@ import org.aspectj.lang.annotation.Pointcut;
 public class AspectV2 {
 
     @Pointcut("execution(* com.hahoho87.springaop.order..*(..))")
-    public void allOrder() {}
+    private void allOrder() {}
 
     @Around("allOrder()")
     public Object doLog(ProceedingJoinPoint joinPoint) throws Throwable {
