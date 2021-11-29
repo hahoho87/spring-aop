@@ -1,6 +1,6 @@
 package com.hahoho87.springaop.order;
 
-import com.hahoho87.springaop.order.aop.AspectV1;
+import com.hahoho87.springaop.order.aop.AspectV2;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.aop.support.AopUtils;
@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Slf4j
 @SpringBootTest
-@Import(AspectV1.class)
+@Import(AspectV2.class)
 class AopTest {
 
     @Autowired
@@ -22,8 +22,8 @@ class AopTest {
 
     @Test
     void aopInfoTest() {
-        AopUtils.isAopProxy(orderService);
-        AopUtils.isAopProxy(orderRepository);
+        log.info("isAopProxy, orderService = {}", AopUtils.isAopProxy(orderService));
+        log.info("isAopProxy, orderRepository = {}", AopUtils.isAopProxy(orderRepository));
     }
 
     @Test
