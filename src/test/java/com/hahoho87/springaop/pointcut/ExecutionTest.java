@@ -1,4 +1,4 @@
-package com.hahoho87.springaop.execution;
+package com.hahoho87.springaop.pointcut;
 
 import com.hahoho87.springaop.member.MemberServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -90,6 +90,69 @@ public class ExecutionTest {
     @Test
     void packageMatchSubPackage2() {
         pointcut.setExpression("execution(* com.hahoho87..*.*(..))");
+        assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
+    }
+
+    @Test
+    void typeExactMatchTest() {
+        pointcut.setExpression("execution(* com.hahoho87.springaop.member.MemberServiceImpl.*(..))");
+        assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
+    }
+
+    @Test
+    void typeMatchSuperTypeTest() {
+        pointcut.setExpression("execution(* com.hahoho87.springaop.member.MemberService.*(..))");
+        assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
+    }
+
+    @Test
+    void typeMatchInternalTest() throws NoSuchMethodException {
+        Method internalMethod = MemberServiceImpl.class.getMethod("internal", String.class);
+        pointcut.setExpression("execution(* com.hahoho87.springaop.member.MemberServiceImpl.*(..))");
+        assertThat(pointcut.matches(internalMethod, MemberServiceImpl.class)).isTrue();
+    }
+
+    @Test
+    void typeMatchNoSuperTypeMethodTest() throws NoSuchMethodException {
+        Method internalMethod = MemberServiceImpl.class.getMethod("internal", String.class);
+        pointcut.setExpression("execution(* com.hahoho87.springaop.member.MemberService.*(..))");
+        // 부모타입에 선언된 메서드만 허용
+        assertThat(pointcut.matches(internalMethod, MemberServiceImpl.class)).isFalse();
+    }
+
+    // String type 파라미터 허용
+    @Test
+    void argsMatchTest() {
+        pointcut.setExpression("execution(* *(String))");
+        assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
+    }
+
+    // 파라미터 없어야 함
+    @Test
+    void noArgsMatchTest() {
+        pointcut.setExpression("execution(* *())");
+        assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isFalse();
+    }
+
+    // 정확히 하나의 파라미터 허용, 모든 타입
+    @Test
+    void argsMatchStarTest() {
+        pointcut.setExpression("execution(* *(*))");
+        assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
+    }
+
+    // 갯수와 무관하게 모든 파라미터, 모든 타입, 파라미터 없음 허용
+    @Test
+    void allArgsMatchTest() {
+        pointcut.setExpression("execution(* *(..))");
+        assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
+    }
+
+    //String 타입으로 시작, 갯수와 무관하게 모든 파라미터, 모든 타입 허용
+    //(String), (String, Xxx), (String, Xxx, Xxx) 허용
+    @Test
+    void complexArgsMatchTest() {
+        pointcut.setExpression("execution(* *(String, ..))");
         assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
     }
 }
