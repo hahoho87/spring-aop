@@ -1,6 +1,6 @@
 package com.hahoho87.springaop.order;
 
-import com.hahoho87.springaop.order.aop.AspectV5Ordering;
+import com.hahoho87.springaop.order.aop.AspectV6Advice;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.aop.support.AopUtils;
@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Slf4j
 @SpringBootTest
-@Import({AspectV5Ordering.LogAspect.class, AspectV5Ordering.transactionAspect.class})
+@Import(AspectV6Advice.class)
 class AopTest {
 
     @Autowired
