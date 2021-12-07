@@ -1,11 +1,15 @@
-package com.hahoho87.springaop.member.annoation;
+package com.hahoho87.springaop.member.annotation;
+
+import org.springframework.stereotype.Component;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ClassAop {
+@Component
+public @interface MethodAop {
+    String value();
 }
